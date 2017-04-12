@@ -55,6 +55,7 @@ def QRScan():
 
 if(is_connected()):
 	print 'connected'
+	os.system('nohup sudo nodejs app.js &')
 else:
 	print 'not connected'
 	scan = QRScan()
