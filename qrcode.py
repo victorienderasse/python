@@ -6,6 +6,8 @@ import zbar
 import urllib2
 import os
 
+# >> /etc/rc.local : sudo python /home/pi/TFE/python/qrcode.py &  
+
 def is_connected():
 	try:
 		urllib2.urlopen('http://192.168.1.50', timeout=1)
@@ -55,9 +57,17 @@ def QRScan():
 		i = i + 1
 
 
-if(is_connected()):
+insist = 0
+conn = False
+while(insist < 10 and not conn):
+	print 'test connection..'
+	conn = is_connected()
+	time.sleep(1)
+	insist = insist + 1
+
+if(conn):
 	print 'connected'
-	os.system('cd /home/pi/TFE/source/camera nohup sudo nodejs app.js &')
+	os.system('cd /home/pi/TFE/source/camera && sudo nodejs app.js &')
 else:
 	print 'not connected'
 	scan = QRScan()
@@ -90,4 +100,4 @@ else:
 	os.system('sudo echo '+cmd+' >> /etc/wpa_supplicant/wpa_supplicant.conf')
 	print 'the system is going to reboot'
 	time.sleep(1)
-	os.system('reboot')
+	#os.system('reboot')
