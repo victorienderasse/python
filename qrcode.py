@@ -14,6 +14,7 @@ def is_connected():
 		return False
 
 def QRScan():
+	i = 0
 	print 'start scanning'
 	data = ''
 	camera = picamera.PiCamera()
@@ -24,7 +25,7 @@ def QRScan():
 	scanner = zbar.ImageScanner()
 	scanner.parse_config('enable')
 
-	while(data == ''):
+	while(data == '' || i < 1000):
 
 		#Create the in-memory stream
 		stream = io.BytesIO()
@@ -51,6 +52,7 @@ def QRScan():
 
 		#clean up
 		del(image)
+		i = i + 1
 
 
 if(is_connected()):
