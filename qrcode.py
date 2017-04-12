@@ -27,7 +27,7 @@ def QRScan():
 	scanner = zbar.ImageScanner()
 	scanner.parse_config('enable')
 
-	while(data == '' || i < 1000):
+	while(data == '' or i < 100):
 
 		#Create the in-memory stream
 		stream = io.BytesIO()
