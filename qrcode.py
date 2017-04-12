@@ -55,7 +55,7 @@ def QRScan():
 
 if(is_connected()):
 	print 'connected'
-	os.system('nohup sudo nodejs app.js &')
+	os.system('cd /home/pi/TFE/source/camera nohup sudo nodejs app.js &')
 else:
 	print 'not connected'
 	scan = QRScan()
