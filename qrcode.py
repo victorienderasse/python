@@ -51,6 +51,7 @@ def QRScan():
 		for symbol in image:
 			data = symbol.data
 			return data
+			camera.close()
 
 		#clean up
 		del(image)
