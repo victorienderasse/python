@@ -5,12 +5,16 @@ from PIL import Image
 import zbar
 import urllib2
 import os
+#from socketIO_client import SocketIO
 
 # >> /etc/rc.local : sudo python /home/pi/TFE/python/qrcode.py &  
 
+hote = '192.168.1.50'
+port = 3000
+
 def is_connected():
 	try:
-		urllib2.urlopen('http://192.168.1.50', timeout=1)
+		urllib2.urlopen('https://google.be', timeout=1)
 		return True
 	except urllib2.URLError as err:
 		return False
@@ -28,10 +32,10 @@ def QRScan():
 	scanner.parse_config('enable')
 
 	while(data == '' or i < 100):
-
+		print i
 		#Create the in-memory stream
 		stream = io.BytesIO()
-		camera.capture(stream, format="jpg")
+		camera.capture(stream, format="jpeg")
 
 		#"Rewind" the stream to the beginning so we can read its content
 		stream.seek(0)
@@ -39,7 +43,7 @@ def QRScan():
 		pil = Image.open(stream)
 		pil = pil.convert('L')
 		width, height = pil.size
-		raw = pil.tostring()
+		raw = pil.tobytes()
 
 		#wrap image data
 		image = zbar.Image(width, height, 'Y800', raw)
@@ -60,7 +64,7 @@ def QRScan():
 
 insist = 0
 conn = False
-while(insist < 10 and not conn):
+while(insist < 5 and not conn):
 	print 'test connection..'
 	conn = is_connected()
 	time.sleep(1)
@@ -68,9 +72,10 @@ while(insist < 10 and not conn):
 
 if(conn):
 	print 'connected'
-	os.system('cd /home/pi/TFE/source/camera && sudo nodejs app.js &')
+	#os.system('cd /home/pi/TFE/source/camera && sudo nodejs app.js &')
 else:
 	print 'not connected'
+	os.system('sudo ifdown wlan0')
 	scan = QRScan()
 	print 'data : '+scan
 
@@ -92,13 +97,33 @@ else:
 				else:
 					password = password + lettre
 
-	cmd = '''"network={
-	ssid="'''+ssid+'''"
-	psk="'''+password+'''"
-	key_mgmt=WPA_PSK
-}"'''
-
-	os.system('sudo echo '+cmd+' >> /etc/wpa_supplicant/wpa_supplicant.conf')
-	print 'the system is going to reboot'
+	cmd1 = '''network={
+	ssid="''' + ssid + '''"
+	psk="''' + password + '''"
+	key_mgmt=WPA-PSK
+}'''
+	cmd = 'sudo echo \'' + cmd1 + '\' >> /etc/wpa_supplicant/wpa_supplicant.conf'
+	os.system(cmd)
 	time.sleep(1)
-	#os.system('reboot')
+	os.system('sudo ifup wlan0')
+	
+
+	insist = 0
+	conn = False
+	while(insist < 15 and not conn):
+		conn = is_connected()
+		time.sleep(1)
+		print 'test connection..'
+		insist = insist + 1
+
+	if(conn):
+		socket = SocketIO(hote,port)
+		p = os.popen('cat /proc/cpuinfo | grep Serial | cut -d ":" -f 2')
+		serial = p.readline()
+		print serial
+		socket.emit('newCameraConnection',{'userID': userID, 'serial': serial})
+		time.sleep(1)
+		os.system("sudo cd /home/pi/TFE/source/camera && sudo nodejs app.js &")
+	else:
+		print 'fail connection'	
+	
