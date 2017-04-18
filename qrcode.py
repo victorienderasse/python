@@ -5,11 +5,11 @@ from PIL import Image
 import zbar
 import urllib2
 import os
-#from socketIO_client import SocketIO
+from socketIO_client import SocketIO
 
 # >> /etc/rc.local : sudo python /home/pi/TFE/python/qrcode.py &  
 
-hote = '192.168.1.50'
+hote = '192.168.1.51'
 port = 3000
 
 def is_connected():
