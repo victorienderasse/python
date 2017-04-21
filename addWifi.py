@@ -84,7 +84,7 @@ addWifi = '''network={
 	key_mgmt=WPA-PSK
 }'''
 
-cmd = 'sudo echo \'' + addWifi + \'' >> /etc/wpa_supplicant/wpa_supplicant.conf'
+cmd = 'sudo echo \'' + addWifi + '\' >> /etc/wpa_supplicant/wpa_supplicant.conf'
 os.system(cmd)
 
 
