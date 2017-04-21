@@ -31,8 +31,8 @@ def QRScan():
 	scanner = zbar.ImageScanner()
 	scanner.parse_config('enable')
 
-	while(data == '' or i < 100):
-		print i
+	while(data == '' and i < 100):
+	
 		#Create the in-memory stream
 		stream = io.BytesIO()
 		camera.capture(stream, format="jpeg")
@@ -123,7 +123,7 @@ else:
 		print serial
 		socket.emit('newCameraConnection',{'userID': userID, 'serial': serial})
 		time.sleep(1)
-		os.system("sudo cd /home/pi/TFE/source/camera && sudo nodejs app.js &")
+		#os.system("sudo cd /home/pi/TFE/source/camera && sudo nodejs app.js &")
 	else:
 		print 'fail connection'	
 	

@@ -1,8 +1,1 @@
-{
-	"camera_warmup_time": 2.5,
-	"delta_thresh": 5,
-	"resolution": [640, 480],
-	"fps": 25,
-	"min_area": 5000,
-	"time_record": 10
-}
+{"camera_warmup_time":1,"delta_thresh":5,"fps":20,"min_area":5000,"brightness":50,"contrast":100,"width":1600,"height":1200}
