@@ -92,6 +92,3 @@ p = os.popen('cat /proc/cpuinfo | grep Serial | cut -d ":" -f 2')
 serial = p.readline()
 
 socket.emit('addWifi',{'userID':userID,'serial':serial})
-
-time.sleep(2)
-#os.system('sudo reboot')
