@@ -1,9 +1,17 @@
+import io
 import zbar
 import time
 from socketIO_client import SocketIO
 from PIL import Image
 import picamera
 import os
+import argparse
+
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--id", required=True, help="CameraID")
+args = vars(ap.parse_args())
+cameraID = args["id"]
 
 hote = '192.168.1.51'
 port = 3000
@@ -88,7 +96,7 @@ cmd = 'sudo echo \'' + addWifi + '\' >> /etc/wpa_supplicant/wpa_supplicant.conf'
 os.system(cmd)
 
 
-p = os.popen('cat /proc/cpuinfo | grep Serial | cut -d ":" -f 2')
-serial = p.readline()
+#p = os.popen('cat /proc/cpuinfo | grep Serial | cut -d ":" -f 2')
+#serial = p.readline()
 
-socket.emit('addWifi',{'userID':userID,'serial':serial})
+socket.emit('addWifiDone',{'userID':userID,'cameraID':cameraID})

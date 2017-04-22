@@ -39,9 +39,11 @@ if timeProcess > 0:
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = tuple(conf["resolution"])
+camera.resolution = (conf["width"],conf["height"]
 camera.framerate = conf["fps"]
-rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
+camera.brightness = conf["brightness"]
+camera.contrast = conf["contrast"]
+rawCapture = PiRGBArray(camera, size=(conf["width"],conf["height"]))
 
 #Initialise Twilio
 #account_sid = "AC175fe55d0a0d00d7094c00338f548ec5"

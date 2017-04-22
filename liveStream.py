@@ -7,6 +7,7 @@ import os
 import time
 
 ap = argparse.ArgumentParser()
+ap.add_argument("-c", "--conf",required=True, help="config file")
 ap.add_argument("-i", "--id", required=True, help="ID of the camera")
 ap.add_argument("-r", "--record", required=True, help="record or not record")
 ap.add_argument("-n", "--name", required=True, help="Camera name")
@@ -27,7 +28,10 @@ port = 3000
 socket = SocketIO(hote,port)
 
 camera = PiCamera()
-camera.resolution = (640,480)
+camera.resolution = (conf["width"],conf["height"]
+camera.framerate = conf["fps"]
+camera.brightness = conf["brightness"]
+camera.contrast = conf["contrast"]
 
 print record
 if (record):

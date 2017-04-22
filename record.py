@@ -34,8 +34,11 @@ socket.emit('recordStart',id)
 
 #Initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = tuple(conf["resolution"])
+camera.resolution = (conf["width"],conf["height"]
 camera.framerate = conf["fps"]
+camera.brightness = conf["brightness"]
+camera.contrast = conf["contrast"]
+
 #rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
 
 #Warmup the camera
