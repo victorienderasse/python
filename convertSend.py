@@ -2,16 +2,21 @@ import os
 import argparse
 import time
 from socketIO_client import SocketIO
+import warnings
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-n", "--name", required=True, help="Camera Name")
 ap.add_argument("-i", "--id", required=True, help="camera ID")
+ap.add_argument("-c", "--conf", required=True, help="conf file")
 args = vars(ap.parse_args())
 name = args["name"]
 id = args["id"]
 
-hote = '192.168.1.50'
-port = 3000
+warnings.filterwarnings("ignore")
+conf = json.load(open(args["conf"]))
+
+hote = conf["hote"]
+port = conf["port"]
 
 socket = SocketIO(hote,port)
 

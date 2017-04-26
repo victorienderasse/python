@@ -4,17 +4,21 @@ from socketIO_client import SocketIO
 import argparse
 import time
 import os
+import warnings
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--id", required=True, help="CameraID")
 ap.add_argument("-res", "--resolution", required=True, help="Camera resolution")
 ap.add_argument("-b","--brightness", required=True, help="Brightness of the camera")
-ap.add_argument("-c","--contrast", required=True, help="contrast of the camera")
-
+ap.add_argument("-ct","--contrast", required=True, help="contrast of the camera")
+ap.add_argument("-c","--conf",required=True,help="conf file")
 args = vars(ap.parse_args())
 
-hote = "192.168.1.50"
-port = 3000
+warnings.filterwarnings
+conf = json.load(open(args["conf"]))
+
+hote = conf["hote"]
+port = conf["port"]
 
 socket = SocketIO(hote,port)
 

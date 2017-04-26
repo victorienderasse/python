@@ -22,8 +22,11 @@ name = args["name"]
 
 print 'name : '+name
 
-hote = "192.168.1.50"
-port = 3000
+warnings.filterwarnings("ignore")
+conf = json.load(open(args["conf"]))
+
+hote = conf["hote"]
+port = conf["port"]
 
 socket = SocketIO(hote,port)
 
