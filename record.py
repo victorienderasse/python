@@ -28,6 +28,7 @@ conf = json.load(open(args["conf"]))
 
 hote = conf["hote"]
 port = conf["port"]
+user = conf["user"]
 
 socket = SocketIO(hote,port)
 socket.emit('recordStart',id)
@@ -66,7 +67,7 @@ print("convert done")
 
 #trasfert video to server
 print("trasfer to server")
-os.system("scp /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4 victorien@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
+os.system("scp /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4 "+user+"@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
 os.system("rm /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4")
 
 socket.emit('recordStop',{'cameraID': id, 'once': once, 'recordID': recordID})

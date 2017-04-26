@@ -18,6 +18,7 @@ conf = json.load(open(args["conf"]))
 
 hote = conf["hote"]
 port = conf["port"]
+user = conf["user"]
 
 socket = SocketIO(hote,port)
 
@@ -29,7 +30,7 @@ os.system("rm /home/pi/TFE/replays/"+name+"_liveRecording.h264")
 print 'convert done'
 
 print 'transfert to server'
-os.system("scp /home/pi/TFE/replays/"+name+"_liveRecording_"+timestr+".mp4 victorien@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
+os.system("scp /home/pi/TFE/replays/"+name+"_liveRecording_"+timestr+".mp4 "+user+"@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
 os.system("rm /home/pi/TFE/replays/"+name+"_liveRecording_"+timestr+".mp4")
 print 'transfert done'
 

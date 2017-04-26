@@ -28,6 +28,9 @@ conf = json.load(open(args["conf"]))
 
 hote = conf["hote"]
 port = conf["port"]
+user = conf["user"]
+
+print 'server : '+hote+':'+str(port)
 
 socket = SocketIO(hote,port)
 
@@ -54,7 +57,7 @@ while True:
 		camera.capture('/home/pi/TFE/img/stream_camera_'+cameraID+'.jpg')
 		print 'end capture picture'
 	print 'sending img'
-	os.system('scp /home/pi/TFE/img/stream_camera_'+cameraID+'.jpg victorien@'+hote+':/home/victorien/TFE/source/server/public/cameras/camera'+cameraID+'/live/')
+	os.system('scp /home/pi/TFE/img/stream_camera_'+cameraID+'.jpg '+user+'@'+hote+':/home/victorien/TFE/source/server/public/cameras/camera'+cameraID+'/live/')
 	print('send')
 	socket.emit('streamSend', cameraID)
 

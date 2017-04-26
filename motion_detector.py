@@ -31,6 +31,7 @@ conf = json.load(open(args["conf"]))
 
 hote = conf["hote"]
 port = conf["port"]
+user = conf["user"]
 
 #tell the server the motion detection start
 socket = SocketIO(hote,port)
@@ -120,7 +121,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
 		#transfer to server
 		print("Transfer to server")
-		os.system("scp /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4 victorien@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
+		os.system("scp /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4 "+user+"@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
 		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4")
 		
 	# otherwise, the room is not occupied
