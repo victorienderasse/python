@@ -1,5 +1,6 @@
 import io
 import zbar
+import json
 import time
 from socketIO_client import SocketIO
 from PIL import Image

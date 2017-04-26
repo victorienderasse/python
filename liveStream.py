@@ -3,6 +3,7 @@ from picamera import PiCamera
 from socketIO_client import SocketIO
 import argparse
 import warnings
+import json
 import os
 import time
 
@@ -31,7 +32,7 @@ port = conf["port"]
 socket = SocketIO(hote,port)
 
 camera = PiCamera()
-camera.resolution = (conf["width"],conf["height"]
+camera.resolution = (conf["width"],conf["height"])
 camera.framerate = conf["fps"]
 camera.brightness = conf["brightness"]
 camera.contrast = conf["contrast"]

@@ -1,3 +1,4 @@
+import json
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 from socketIO_client import SocketIO
