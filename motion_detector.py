@@ -40,7 +40,7 @@ if timeProcess > 0:
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (conf["width"],conf["height"]
+camera.resolution = (conf["width"],conf["height"])
 camera.framerate = conf["fps"]
 camera.brightness = conf["brightness"]
 camera.contrast = conf["contrast"]
@@ -121,7 +121,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
 		#transfer to server
 		print("Transfer to server")
-		os.system("scp /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4 "+user+"@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+id+"/videos/")
+		os.system("scp /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
 		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4")
 		
 	# otherwise, the room is not occupied

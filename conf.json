@@ -1,1 +1,1 @@
-{"user":"pi","hote":"192.168.1.51","port":3000,"camera_warmup_time":1,"delta_thresh":5,"fps":20,"min_area":5000,"brightness":50,"contrast":100,"width":1600,"height":1200}
+{"user":"pi","hote":"192.168.1.51","port":3000,"camera_warmup_time":1,"time_record":10,"delta_thresh":5,"fps":25,"min_area":5000,"brightness":55,"contrast":75,"width":640,"height":480}

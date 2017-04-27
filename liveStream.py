@@ -57,7 +57,7 @@ while True:
 		camera.capture('/home/pi/TFE/img/stream_camera_'+cameraID+'.jpg')
 		print 'end capture picture'
 	print 'sending img'
-	os.system('scp /home/pi/TFE/img/stream_camera_'+cameraID+'.jpg '+user+'@'+hote+':/home/victorien/TFE/source/server/public/cameras/camera'+cameraID+'/live/')
+	os.system('scp /home/pi/TFE/img/stream_camera_'+cameraID+'.jpg '+user+'@'+hote+':/home/'+user+'/TFE/source/server/public/cameras/camera'+cameraID+'/live/')
 	print('send')
 	socket.emit('streamSend', cameraID)
 

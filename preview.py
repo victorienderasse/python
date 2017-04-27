@@ -40,7 +40,7 @@ camera.capture("/home/pi/TFE/img/preview.jpg")
 
 camera.close()
 
-os.system("scp /home/pi/TFE/img/preview.jpg "+user+"@"+hote+":/home/victorien/TFE/source/server/public/cameras/camera"+args['id']+"/live/")
+os.system("scp /home/pi/TFE/img/preview.jpg "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+args['id']+"/live/")
 os.system("rm /home/pi/TFE/img/preview.jpg")
 
 socket.emit('previewSend', args["id"])
