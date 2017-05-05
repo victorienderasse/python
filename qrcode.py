@@ -72,7 +72,7 @@ while(insist < 5 and not conn):
 
 if(conn):
 	print 'connected'
-	#os.system('cd /home/pi/TFE/source/camera && sudo nodejs app.js &')
+	os.system('cd /home/pi/TFE/source/camera && sudo nodejs app.js &')
 else:
 	print 'not connected'
 	os.system('sudo ifdown wlan0')
@@ -96,6 +96,10 @@ else:
 					ssid = ssid + lettre
 				else:
 					password = password + lettre
+
+	print 'userID: '+userID
+	print 'ssid: '+ssid
+	print 'pass: '+password
 
 	cmd1 = '''network={
 	ssid="''' + ssid + '''"
@@ -123,7 +127,7 @@ else:
 		print serial
 		socket.emit('newCameraConnection',{'userID': userID, 'serial': serial})
 		time.sleep(1)
-		#os.system("sudo cd /home/pi/TFE/source/camera && sudo nodejs app.js &")
+		os.system("cd /home/pi/TFE/source/camera && sudo nodejs app.js &")
 	else:
 		print 'fail connection'	
 	
