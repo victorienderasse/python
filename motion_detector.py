@@ -88,7 +88,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255,
 		cv2.THRESH_BINARY)[1]
 	thresh = cv2.dilate(thresh, None, iterations=2)
-	(_,cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+	(cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)
 
 	# loop over the contours
@@ -108,7 +108,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		#message = client.messages.create(to='+32474227310',from_='+32460207648',body=message)
 		#Get Datetime
 		timestr = time.strftime("%d-%m-%Y_%H-%M")
-		socket.emit('motionDetected', {'cameraID': id, 'timestr': timestr})
+		socket.emit('motionDetected', {'cameraID': id, 'timestr': timestr, 'file': name+'_motionDetection_'+timestr+'.mp4'})
 		#Start recording
 		camera.start_recording("/home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
 		print("Recording..")
