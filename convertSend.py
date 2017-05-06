@@ -22,7 +22,7 @@ user = conf["user"]
 
 socket = SocketIO(hote,port)
 
-timestr = time.strftime("%d-%m-%Y_%H-%M")
+timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
 
 print 'convert video'
 os.system('MP4Box -add /home/pi/TFE/replays/'+name+'_liveRecording.h264 /home/pi/TFE/replays/'+name+'_liveRecording_'+timestr+'.mp4')

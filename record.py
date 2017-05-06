@@ -47,7 +47,7 @@ print("[INFO] Warming up..")
 time.sleep(conf["camera_warmup_time"])
 
 #get date time
-timestr = time.strftime("%d-%m-%Y-%H-%M")
+timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
 #Start recording
 print("recording..")

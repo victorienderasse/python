@@ -107,7 +107,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		#message = "Warning ! Something has been detected by camera "+name
 		#message = client.messages.create(to='+32474227310',from_='+32460207648',body=message)
 		#Get Datetime
-		timestr = time.strftime("%d-%m-%Y_%H-%M")
+		timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
 		socket.emit('motionDetected', {'cameraID': id, 'timestr': timestr, 'file': name+'_motionDetection_'+timestr+'.mp4'})
 		#Start recording
 		camera.start_recording("/home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
