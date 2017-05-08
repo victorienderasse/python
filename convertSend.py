@@ -23,15 +23,16 @@ user = conf["user"]
 socket = SocketIO(hote,port)
 
 timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
+fileName = name+'_live_'+timestr
 
 print 'convert video'
-os.system('MP4Box -add /home/pi/TFE/replays/'+name+'_liveRecording.h264 /home/pi/TFE/replays/'+name+'_liveRecording_'+timestr+'.mp4')
+os.system('MP4Box -add /home/pi/TFE/replays/'+name+'_liveRecording.h264 /home/pi/TFE/replays/'+fileName+'.mp4')
 os.system("rm /home/pi/TFE/replays/"+name+"_liveRecording.h264")
 print 'convert done'
 
 print 'transfert to server'
-os.system("scp /home/pi/TFE/replays/"+name+"_liveRecording_"+timestr+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
-os.system("rm /home/pi/TFE/replays/"+name+"_liveRecording_"+timestr+".mp4")
+os.system("scp /home/pi/TFE/replays/"+fileName+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
+os.system("rm /home/pi/TFE/replays/"+fileName+".mp4")
 print 'transfert done'
 
-socket.emit('getLiveRecordingDone',id)
+socket.emit('getLiveRecordingDone',{'cameraID': id, 'type': 'live', 'fileName': fileName+'.mp4'})

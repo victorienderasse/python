@@ -14,13 +14,13 @@ ap.add_argument("-t", "--time", required=True, help="time to record")
 ap.add_argument("-n", "--name", required=True, help="Name of the camera recording")
 ap.add_argument("-i", "--id", required=True, help="CameraID")
 ap.add_argument("-o", "--once", required=False, help="exec just once")
-ap.add_argument("-r", "--recordID", required=False, help="recordID")
+ap.add_argument("-p", "--planningID", required=False, help="planningID")
 args = vars(ap.parse_args())
 time_record = int(args["time"])
 name = args["name"]
 id = args["id"]
 once = args["once"]
-recordID = args["recordID"]
+planningID = args["planningID"]
 
 #filter warnings, load the configuration
 warnings.filterwarnings("ignore")
@@ -47,26 +47,27 @@ print("[INFO] Warming up..")
 time.sleep(conf["camera_warmup_time"])
 
 #get date time
-timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
+timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
+fileName = name+'_record_'+timestr 
 
 #Start recording
 print("recording..")
-camera.start_recording("/home/pi/TFE/replays/"+name+"_record_"+timestr+".h264")
+camera.start_recording("/home/pi/TFE/replays/"+fileName+".h264")
 camera.wait_recording(time_record)
 camera.stop_recording()
 print("end Recording")
 
 #convert video to mp4 format because of damn Chrome
 print("convert video")
-os.system("MP4Box -add /home/pi/TFE/replays/"+name+"_record_"+timestr+".h264 /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4")
-os.system("rm /home/pi/TFE/replays/"+name+"_record_"+timestr+".h264")
+os.system("MP4Box -add /home/pi/TFE/replays/"+fileName+".h264 /home/pi/TFE/replays/"+fileName+".mp4")
+os.system("rm /home/pi/TFE/replays/"+fileName+".h264")
 print("convert done")
 
 #trasfert video to server
 print("trasfer to server")
-os.system("scp /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
-os.system("rm /home/pi/TFE/replays/"+name+"_record_"+timestr+".mp4")
+os.system("scp /home/pi/TFE/replays/"+fileName+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
+os.system("rm /home/pi/TFE/replays/"+fileName+".mp4")
 
-socket.emit('recordStop',{'cameraID': id, 'once': once, 'recordID': recordID})
+socket.emit('recordStop',{'cameraID': id, 'once': once, 'planningID': planningID, 'fileName': fileName+'.mp4', 'type': 'rec'})
 
 camera.close()

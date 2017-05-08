@@ -16,12 +16,12 @@ ap.add_argument("-n", "--name", required=True, help="Name of the camera")
 ap.add_argument("-i", "--id", required=True, help="ID of the camera")
 ap.add_argument("-t", "--time", required=True, help="Time to process")
 ap.add_argument("-o", "--once", required=False, help="exec just once")
-ap.add_argument("-r", "--recordID", required=False, help="recordID")
+ap.add_argument("-p", "--planningID", required=False, help="planningID")
 args = vars(ap.parse_args())
 name = args["name"]
 id = args["id"]
 once = args["once"]
-recordID = args["recordID"]
+planningID = args["planningID"]
 timeProcess = args["time"]
 timeProcess = int(timeProcess)
 
@@ -45,11 +45,6 @@ camera.framerate = conf["fps"]
 camera.brightness = conf["brightness"]
 camera.contrast = conf["contrast"]
 rawCapture = PiRGBArray(camera, size=(conf["width"],conf["height"]))
-
-#Initialise Twilio
-#account_sid = "AC175fe55d0a0d00d7094c00338f548ec5"
-#auth_token = "956f723bfa80087e696300e1358f46cb"
-#client = TwilioRestClient(account_sid, auth_token)
 
 # allow the camera to warmup, then initialize the average frame, and frame motion counter
 print "[INFO] warming up..."
@@ -108,21 +103,24 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		#message = client.messages.create(to='+32474227310',from_='+32460207648',body=message)
 		#Get Datetime
 		timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
-		socket.emit('motionDetected', {'cameraID': id, 'timestr': timestr, 'file': name+'_motionDetection_'+timestr+'.mp4'})
+		fileName = name+'_motionDetection_'+timestr
+		socket.emit('motionDetected', {'cameraID': id, 'timestr': timestr})
 		#Start recording
-		camera.start_recording("/home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
+		camera.start_recording("/home/pi/TFE/replays/"+fileName+".h264")
 		print("Recording..")
 		camera.wait_recording(conf["time_record"])
 		camera.stop_recording()
 		print("Stop recording")	
 		#Convert video to mp4 because of damn Chrome
 		print("convert video")
-		os.system("MP4Box -add /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264 /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4")
-		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".h264")
+		os.system("MP4Box -add /home/pi/TFE/replays/"+fileName+".h264 /home/pi/TFE/replays/"+fileName+".mp4")
+		os.system("rm /home/pi/TFE/replays/"+fileName+".h264")
 		#transfer to server
 		print("Transfer to server")
-		os.system("scp /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
-		os.system("rm /home/pi/TFE/replays/"+name+"_motionDetection_"+timestr+".mp4")
+		os.system("scp /home/pi/TFE/replays/"+fileName+".mp4 "+user+"@"+hote+":/home/"+user+"/TFE/source/server/public/cameras/camera"+id+"/videos/")
+		os.system("rm /home/pi/TFE/replays/"+fileName+".mp4")
+		
+		socket.emit('motionDetectedSend', {'cameraID': id, 'fileName': fileName+'.mp4', 'type':'det'})
 		
 	# otherwise, the room is not occupied
 	else:		
@@ -137,5 +135,5 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		print 'timeProcess3 : ',timeProcess3
 		if timeProcess3 > timeProcess:
 			print 'break'
-			socket.emit('motionDetectionStop', {'cameraID': id, 'once': once, 'recordID': recordID})
+			socket.emit('motionDetectionStop', {'cameraID': id, 'once': once, 'planningID': planningID})
 			break;
