@@ -50,7 +50,6 @@ rawCapture = PiRGBArray(camera, size=(conf["width"],conf["height"]))
 print "[INFO] warming up..."
 time.sleep(conf["camera_warmup_time"])
 avg = None
-motionCounter = 0
 if timeProcess > 0:
 	timeProcess1 = time.time()
 
@@ -58,7 +57,7 @@ if timeProcess > 0:
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image
 	frame = f.array
-	state = "Unoccupied"
+	motion = False
 
 	# resize the frame, convert it to grayscale, and blur it
 	frame = imutils.resize(frame, width=500)
@@ -93,14 +92,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			continue
 
 		# update the state
-		state = "Occupied"
+		motion = True
 
 	# check to see if the room is occupied
-	if state == "Occupied":
-		print "occupied"
-		#Send sms
-		#message = "Warning ! Something has been detected by camera "+name
-		#message = client.messages.create(to='+32474227310',from_='+32460207648',body=message)
+	if motion:
+		print "motion detected"
 		#Get Datetime
 		timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
 		fileName = name+'_motionDetection_'+timestr
@@ -122,9 +118,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		
 		socket.emit('motionDetectedSend', {'cameraID': id, 'fileName': fileName+'.mp4', 'type':'det'})
 		
-	# otherwise, the room is not occupied
-	else:		
-		motionCounter = 0
 
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)	
